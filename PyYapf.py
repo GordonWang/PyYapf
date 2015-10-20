@@ -43,7 +43,9 @@ def failure_parser(in_failure, encoding):
         lastline = in_failure.strip().split('\n')[-1]
         err, msg = lastline.split(':')[0:2]
         detail = ":".join(lastline.strip().split(':')[2:])
-        tval = {}
+        tval = {
+            "Stack Trace:": '\n'.join(in_failure.strip().split('\n')[0:-1])
+        }
         stripped_comma = False
         key = None
 
@@ -258,10 +260,9 @@ class YapfCommand(sublime_plugin.TextCommand):
         syntax = ""
         ext = ""
 
-        if (fName != None): # file exists, pull syntax type from extension
+        if (fName != None):  # file exists, pull syntax type from extension
             ext = os.path.splitext(fName)[1][1:]
-        if(syntaxPath != None):
+        if (syntaxPath != None):
             syntax = os.path.splitext(syntaxPath)[0].split('/')[-1].lower()
 
         return ext == 'py' or "Python" in syntax
-
